@@ -16,16 +16,13 @@ C4LCUL4TOR is a simple, hacker-styled calculator application developed in Java u
 
 - Java Development Kit (JDK) 8 or higher
 
-### Running the Application
+### Ways of Running the Application
 
-1. Compile the Java files:
-   ```
-   javac com/calcuapp/*.java
-   ```
+1. Clone/download this repo then run `Main`
 
-2. Run the main class:
+2. Download only the `calculator_app.jar` file and run this at the jar's directory:
    ```
-   java com.calcuapp.Main
+   java -jar calculator_app.jar
    ```
 
 ## Coding Conventions
