@@ -3,6 +3,8 @@ package com.calcuapp;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import javax.swing.Timer;
+import java.awt.event.ActionEvent;
 
 /**
  * The main screen of the calculator application.
@@ -41,7 +43,7 @@ public final class Screen extends JFrame {
 
     private Timer marqueeTimer;
     private int marqueePosition = 0;
-
+    private Timer displayTimer;
     public Screen() {
         super("C4LCUL4TOR");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,6 +68,14 @@ public final class Screen extends JFrame {
         setVisible(true);
 
         initMarqueeTimer();
+
+        displayTimer = new Timer(2000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                display.setText("");
+                displayTimer.stop();
+            }
+        });
     }
 
     private JTextField createDisplay() {
@@ -101,13 +111,13 @@ public final class Screen extends JFrame {
                 JButton equalButton = createButton("=");
                 gbc.gridwidth = 2;
                 panel.add(equalButton, gbc);
-                gbc.gridwidth = 1; 
+                gbc.gridwidth = 1;
             } else {
                 panel.add(createButton(label), gbc);
             }
 
             if (gbc.gridx == 3) {
-                gridY++; 
+                gridY++;
             }
         }
 
@@ -198,20 +208,24 @@ public final class Screen extends JFrame {
             display.setText(performCalculation());
         } catch (NumberFormatException e) {
             displaySyntaxError();
+            clearCalculator(); // Clear the display after showing the error
         }
     }
 
     private String performCalculation() {
+        double value;
+
         switch (operator) {
             case '+':
-                return String.valueOf(firstOperand + secondOperand);
+                value = firstOperand + secondOperand;
+                break;
             case '-':
-                return String.valueOf(firstOperand - secondOperand);
+                return String.valueOf(String.format("%.0f", firstOperand - secondOperand));
             case '*':
-                return String.valueOf(firstOperand * secondOperand);
+                return String.valueOf(String.format("%.0f", firstOperand * secondOperand));
             case '/':
                 if (secondOperand == 0) return displayDivisionError();
-                return String.valueOf(firstOperand / secondOperand);
+                return String.valueOf(String.format("%.0f", firstOperand / secondOperand));
             case '^':
                 return String.valueOf(Math.pow(firstOperand, secondOperand));
             case '%':
@@ -220,15 +234,29 @@ public final class Screen extends JFrame {
             default:
                 return display.getText();
         }
+            // if the input contains a decimal, return the result as a double
+            if (display.getText().contains(".")) {
+                return String.valueOf(value);
+            }
+            // if the input is an integer, return the result as an integer
+            else {
+                return String.valueOf(String.format("%.0f", value));
+            }
+
     }
 
     private void displaySyntaxError() {
-        display.setText("SYNT4X 3RROR!");
+        displayTimer.start();
+        display.setText("$YNT4X 3RR0R");
+
     }
 
     private String displayDivisionError() {
-        return "DIVI$ION 3RROR!";
+        displayTimer.start();
+        return "DIV BY Z3R0!";
     }
+
+
 
     private void initMarqueeTimer() {
         marqueeTimer = new Timer(200, e -> updateMarquee());
