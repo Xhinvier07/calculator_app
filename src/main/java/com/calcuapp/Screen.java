@@ -6,6 +6,13 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 
+// background music
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
+
 /**
  * The main screen of the calculator application.
  */
@@ -76,6 +83,18 @@ public final class Screen extends JFrame {
                 displayTimer.stop();
             }
         });
+
+
+        // background music
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\main\\java\\com\\calcuapp\\effect.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Error with playing sound.");
+            e.printStackTrace();
+        }
     }
 
     private JTextField createDisplay() {
