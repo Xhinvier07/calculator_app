@@ -14,7 +14,7 @@ public final class Screen extends JFrame {
 
     private static final String[] BUTTON_LABELS = {
             "C", "^", "%", "/",
-            "7", "8", "9", "*",
+            "7", "8", "9", "x",
             "4", "5", "6", "-",
             "1", "2", "3", "+",
             "0", ".", ""
@@ -161,7 +161,7 @@ public final class Screen extends JFrame {
                 break;
             case "+":
             case "-":
-            case "*":
+            case "x":
             case "/":
                 setOperator(label.charAt(0));
                 break;
@@ -213,6 +213,7 @@ public final class Screen extends JFrame {
         }
     }
 
+
     private void calculateResult() {
         try {
             secondOperand = Double.parseDouble(display.getText());
@@ -235,7 +236,7 @@ public final class Screen extends JFrame {
             case '-':
                 value = firstOperand - secondOperand;
                 break;
-            case '*':
+            case 'x':
                 value = firstOperand * secondOperand;
                 break;
             case '/':
