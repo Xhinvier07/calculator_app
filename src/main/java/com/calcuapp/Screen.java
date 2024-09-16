@@ -79,7 +79,7 @@ public final class Screen extends JFrame {
     }
 
     private JTextField createDisplay() {
-        JTextField textField = new JTextField();
+        JTextField textField = new JTextField("0");
         textField.setEditable(false);
         textField.setFont(DISPLAY_FONT);
         textField.setHorizontalAlignment(JTextField.RIGHT);
