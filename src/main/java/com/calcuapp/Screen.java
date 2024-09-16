@@ -37,8 +37,8 @@ public final class Screen extends JFrame {
     private static final Color BUTTON_COLOR = new Color(0, 40, 0);
     private static final Color OPERATOR_COLOR = new Color(0, 80, 0);
 
-    private static final Font MONO_FONT = new Font("Consolas", Font.PLAIN, BUTTON_FONT_SIZE);
-    private static final Font DISPLAY_FONT = new Font("Consolas", Font.BOLD, DISPLAY_FONT_SIZE);
+    private static final Font MONO_FONT = new Font("OCR A Extended", Font.PLAIN, BUTTON_FONT_SIZE);
+    private static final Font DISPLAY_FONT = new Font("OCR A Extended", Font.BOLD, DISPLAY_FONT_SIZE);
 
     private static final String CREDITS_TEXT = "This was made by Dane Quintano, Dharmveer Sandhu, JC Paglinawan, and Jansen Moral for CS0053....";
 
@@ -87,7 +87,7 @@ public final class Screen extends JFrame {
 
         // background music
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\main\\java\\com\\calcuapp\\effect.wav"));
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\main\\java\\com\\calcuapp\\bg.wav"));
             Clip clip = AudioSystem.getClip();
             clip.open(audioInputStream);
             clip.start();
@@ -165,6 +165,16 @@ public final class Screen extends JFrame {
     }
 
     private void handleButtonClick(String label) {
+        //play sound when button is clicked
+        try {
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File("src\\main\\java\\com\\calcuapp\\effect.wav"));
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInputStream);
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Error with playing sound.");
+            e.printStackTrace();
+        }
         switch (label) {
             case "C":
                 clearCalculator();
