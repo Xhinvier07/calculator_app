@@ -72,7 +72,7 @@ public final class Screen extends JFrame {
         displayTimer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                display.setText("");
+                display.setText("0");
                 displayTimer.stop();
             }
         });
@@ -171,7 +171,7 @@ public final class Screen extends JFrame {
     }
 
     private void clearCalculator() {
-        display.setText("");
+        display.setText("0");
         firstOperand = 0;
         secondOperand = 0;
         operator = '\0';
@@ -192,7 +192,18 @@ public final class Screen extends JFrame {
         if (text.equals(".") && display.getText().contains(".")) {
             return;
         }
-        display.setText(display.getText() + text);
+        String currentText = display.getText();
+
+        // Remove leading zeros if the current display is "0" or empty
+        if (currentText.equals("0")) {
+            if (text.equals("0")) {
+                return; // Do not allow multiple zeros
+            } else {
+                currentText = ""; // Clear the display if the current is "0"
+            }
+        }
+
+        display.setText(currentText + text);
         checkEasterEgg();
     }
 
@@ -212,6 +223,8 @@ public final class Screen extends JFrame {
         }
     }
 
+
+
     private String performCalculation() {
         double value;
 
@@ -220,28 +233,33 @@ public final class Screen extends JFrame {
                 value = firstOperand + secondOperand;
                 break;
             case '-':
-                return String.valueOf(String.format("%.0f", firstOperand - secondOperand));
+                value = firstOperand - secondOperand;
+                break;
             case '*':
-                return String.valueOf(String.format("%.0f", firstOperand * secondOperand));
+                value = firstOperand * secondOperand;
+                break;
             case '/':
                 if (secondOperand == 0) return displayDivisionError();
-                return String.valueOf(String.format("%.0f", firstOperand / secondOperand));
+                value = firstOperand / secondOperand;
+                break;
             case '^':
-                return String.valueOf(Math.pow(firstOperand, secondOperand));
+                value = Math.pow(firstOperand, secondOperand);
+                break;
             case '%':
                 if (secondOperand == 0) return displayDivisionError();
-                return String.valueOf(firstOperand % secondOperand);
+                value = firstOperand % secondOperand;
+                break;
             default:
                 return display.getText();
         }
-            // if the input contains a decimal, return the result as a double
-            if (display.getText().contains(".")) {
-                return String.valueOf(value);
-            }
-            // if the input is an integer, return the result as an integer
-            else {
-                return String.valueOf(String.format("%.0f", value));
-            }
+
+        // Remove leading zeros from the result
+        String result = String.valueOf(value);
+        if (result.endsWith(".0")) {
+            result = result.substring(0, result.length() - 2);
+        }
+        return result;
+
 
     }
 
