@@ -253,6 +253,17 @@ public final class Screen extends JFrame {
                 return display.getText();
         }
 
+
+        // Round the result to 12 decimal places
+        if (value % 1 != 0) {
+            value = Math.round(value * 1000000000000.0) / 1000000000000.0; // Round to 12 decimal places
+        }
+
+        //if the value exceeds to 15 digits, it will be converted to scientific notation
+        if (String.valueOf(value).length() > 15) {
+            return String.format("%.12e", value);
+        }
+
         // Remove leading zeros from the result
         String result = String.valueOf(value);
         if (result.endsWith(".0")) {
